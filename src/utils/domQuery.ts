@@ -298,6 +298,18 @@ export class DOMQuery {
 
         return new DOMQuery(matched);
     }
+
+    on(type: string, listener: EventListener | EventListenerObject, options?: boolean | AddEventListenerOptions): void {
+        this.each((node) => {
+            node.addEventListener(type, listener, options);
+        });
+    }
+
+    off(type: string, listener: EventListener | EventListenerObject, options?: boolean | AddEventListenerOptions): void {
+        this.each((node) => {
+            node.removeEventListener(type, listener, options);
+        });
+    }
 }
 
 export function domQuery(selector: Selector, context?: HTMLElement): DOMQuery {

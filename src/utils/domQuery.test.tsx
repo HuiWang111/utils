@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { domQuery as $ } from './domQuery';
 
 describe('test domQuery api', () => {
-    it('test domQuery api', () => {
+    it('domQuery should work', () => {
         render(
             <div className='test-container' id='test'>
                 <div className='test-wrapper' id='first-wrapper'>
@@ -111,5 +111,16 @@ describe('test domQuery api', () => {
         expect($wrap.filter((el) => $(el).find('input').length > 0).length).toBe(1);
         expect($wrap.filter((el) => $(el).find('input').length === 1).length).toBe(1);
         expect($wrap.filter((el) => $(el).find('div').length === 0).length).toBe(2);
+
+        const listener = jest.fn();
+        // test on method
+        $wrap.on('click', listener);
+        fireEvent.click($firstWrap[0] as HTMLElement);
+        expect(listener).toBeCalledTimes(1);
+
+        // test off method
+        $wrap.off('click', listener);
+        fireEvent.click($firstWrap[0] as HTMLElement);
+        expect(listener).toBeCalledTimes(1);
     });
 });
